@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Jonas Banay | IT Portfolio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #1F6F43;
+    --primary-light: #2a9d5f;
+    --accent: #9FD3B6;
+    --dark: #0a1f14;
+    --light: #f0f9f4;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    background: var(--dark);
+    color: var(--light);
+}
+
+/* ===== NAVIGATION ===== */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    background: rgba(10, 31, 20, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(159, 211, 182, 0.1);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+}
+
+.nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-light);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-links a:hover {
+    color: var(--primary-light);
+}
+
+/* ===== FULL SCREEN SECTIONS ===== */
+section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 100px 6%;
+}
+
+/* ===== HERO SECTION ===== */
+#hero {
+    background: linear-gradient(135deg, var(--dark) 0%, #0f3322 100%);
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: 1200px;
+    text-align: center;
+    z-index: 2;
+    position: relative;
+}
+
+.profile-pic {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 5px solid var(--accent);
+    margin-bottom: 30px;
+    animation: float 3s ease-in-out infinite;
+    box-shadow: 0 20px 60px rgba(31, 111, 67, 0.4);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+.hero-content h1 {
+    font-size: 5rem;
+    font-weight: 900;
+    color: var(--accent);
+    margin-bottom: 15px;
+    line-height: 1.1;
+}
+
+.hero-content .subtitle {
+    font-size: 1.8rem;
+    color: var(--primary-light);
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 16px 40px;
+    background: var(--primary);
+    color: var(--light);
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(31, 111, 67, 0.3);
+}
+
+.cta-button:hover {
+    background: var(--primary-light);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(42, 157, 95, 0.5);
+}
+
+/* Animated Background */
+.hero-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(31, 111, 67, 0.1);
+    animation: drift 20s infinite;
+}
+
+.circle:nth-child(1) {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    left: 10%;
+    animation-duration: 25s;
+}
+
+.circle:nth-child(2) {
+    width: 200px;
+    height: 200px;
+    top: 60%;
+    right: 10%;
+    animation-duration: 30s;
+    animation-delay: -10s;
+}
+
+.circle:nth-child(3) {
+    width: 150px;
+    height: 150px;
+    bottom: 20%;
+    left: 50%;
+    animation-duration: 20s;
+    animation-delay: -5s;
+}
+
+@keyframes drift {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(50px, -50px); }
+    50% { transform: translate(-30px, -80px); }
+    75% { transform: translate(30px, -30px); }
+}
+
+/* ===== ABOUT SECTION ===== */
+#about {
+    background: linear-gradient(135deg, #0f3322 0%, var(--dark) 100%);
+}
+
+.about-container {
+    max-width: 1200px;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 60px;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--primary-light);
+    border-radius: 2px;
+}
+
+.highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 50px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 900px) {
+    .highlights-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.highlight-card {
+    background: rgba(31, 111, 67, 0.15);
+    padding: 40px 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(159, 211, 182, 0.2);
+    transition: all 0.4s ease;
+}
+
+.highlight-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    background: rgba(31, 111, 67, 0.25);
+    border-color: var(--accent);
+    box-shadow: 0 20px 60px rgba(31, 111, 67, 0.4);
+}
+
+.highlight-card .icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.highlight-card h3 {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 15px;
+}
+
+.highlight-card p {
+    color: rgba(240, 249, 244, 0.8);
+    line-height: 1.6;
+}
+
+/* ===== SKILLS SECTION ===== */
+#skills {
+    background: linear-gradient(135deg, var(--dark) 0%, #1a4d32 100%);
+}
+
+.skills-container {
+    max-width: 1200px;
+    text-align: center;
+    width: 100%;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.skill-card {
+    background: rgba(159, 211, 182, 0.1);
+    padding: 40px 20px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 2px solid transparent;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(42, 157, 95, 0.2) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.skill-card:hover::before {
+    opacity: 1;
+}
+
+.skill-card:hover {
+    transform: translateY(-12px) rotate(2deg);
+    border-color: var(--accent);
+    box-shadow: 0 20px 50px rgba(31, 111, 67, 0.5);
+}
+
+.skill-icon {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    display: block;
+    filter: grayscale(0.3);
+    transition: filter 0.3s ease;
+}
+
+.skill-card:hover .skill-icon {
+    filter: grayscale(0);
+}
+
+.skill-card h3 {
+    font-size: 1.2rem;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* ===== PROJECTS SECTION ===== */
+#projects {
+    background: linear-gradient(135deg, #1a4d32 0%, var(--dark) 100%);
+}
+
+.projects-container {
+    max-width: 1200px;
+    width: 100%;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.project-card {
+    background: rgba(31, 111, 67, 0.2);
+    padding: 40px;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(159, 211, 182, 0.2);
+    transition: all 0.4s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    background: rgba(31, 111, 67, 0.3);
+    box-shadow: 0 25px 70px rgba(31, 111, 67, 0.5);
+}
+
+.project-card h3 {
+    font-size: 1.8rem;
+    color: var(--accent);
+    margin-bottom: 15px;
+}
+
+.project-card p {
+    color: rgba(240, 249, 244, 0.8);
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+/* ===== SNAKE GAME (SCOPED) ===== */
+.snake-game {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.snake-game .score-board {
+    background: rgba(31, 111, 67, 0.5);
+    color: var(--accent);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.snake-game canvas {
+    background-color: #9bbc0f;
+    border: 4px solid var(--primary);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.snake-game .gameOverScreen {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 31, 20, 0.95);
+    color: var(--accent);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 15px;
+}
+
+.snake-game .gameOverScreen.show {
+    display: flex;
+}
+
+.snake-game .gameOverScreen p {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.snake-game button {
+    background: var(--primary);
+    color: var(--light);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.snake-game button:hover {
+    background: var(--primary-light);
+    transform: scale(1.05);
+}
+
+/* ===== CERTIFICATIONS SECTION ===== */
+#certifications {
+    background: linear-gradient(135deg, var(--dark) 0%, #0f3322 100%);
+}
+
+.cert-container {
+    max-width: 900px;
+    text-align: center;
+}
+
+.cert-list {
+    list-style: none;
+    margin-top: 50px;
+}
+
+.cert-list li {
+    background: rgba(31, 111, 67, 0.15);
+    padding: 25px 40px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    border-left: 5px solid var(--primary-light);
+    font-size: 1.2rem;
+    color: var(--accent);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.cert-list li:hover {
+    transform: translateX(10px);
+    background: rgba(31, 111, 67, 0.25);
+    border-left-color: var(--accent);
+}
+
+/* ===== ACTIVITIES SECTION ===== */
+#activities {
+    background: linear-gradient(135deg, #0f3322 0%, var(--dark) 100%);
+}
+
+.activities-container {
+    max-width: 900px;
+    text-align: center;
+}
+
+.activities-list {
+    list-style: none;
+    margin-top: 50px;
+}
+
+.activities-list li {
+    background: rgba(31, 111, 67, 0.15);
+    padding: 25px 40px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    border-left: 5px solid var(--primary-light);
+    font-size: 1.2rem;
+    color: var(--accent);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.activities-list li:hover {
+    transform: translateX(10px);
+    background: rgba(31, 111, 67, 0.25);
+    border-left-color: var(--accent);
+}
+
+/* ===== CONTACT SECTION ===== */
+#contact {
+    background: linear-gradient(135deg, var(--dark) 0%, #1a4d32 100%);
+}
+
+.contact-container {
+    max-width: 800px;
+    text-align: center;
+}
+
+.contact-info {
+    margin-top: 50px;
+}
+
+.contact-item {
+    background: rgba(31, 111, 67, 0.15);
+    padding: 30px;
+    margin-bottom: 25px;
+    border-radius: 20px;
+    font-size: 1.3rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(159, 211, 182, 0.2);
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+    background: rgba(31, 111, 67, 0.25);
+    transform: scale(1.02);
+}
+
+.contact-item strong {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.contact-item a {
+    color: var(--primary-light);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-item a:hover {
+    color: var(--accent);
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background: var(--dark);
+    color: var(--accent);
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid rgba(159, 211, 182, 0.1);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 3rem;
+    }
+    
+    .hero-content .subtitle {
+        font-size: 1.3rem;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+    }
+    
+    .nav-links {
+        gap: 15px;
+    }
+    
+    .nav-links a {
+        font-size: 0.85rem;
+    }
+    
+    section {
+        padding: 80px 5%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav>
+    <a href="#hero" class="logo">JB</a>
+    <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#certifications">Certifications</a></li>
+        <li><a href="#activities">Activities</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- Hero Section -->
+<section id="hero">
+    <div class="hero-bg">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    <div class="hero-content">
+        <img src="profile.jpg" alt="Jonas Banay" class="profile-pic">
+        <h1>Jonas Banay</h1>
+        <p class="subtitle">IT Student | Aspiring Web Developer</p>
+        <a href="#projects" class="cta-button">View My Work</a>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about">
+    <div class="about-container">
+        <h2 class="section-title">About Me</h2>
+        <div class="highlights-grid">
+            <div class="highlight-card">
+                <span class="icon">🎓</span>
+                <h3>Education</h3>
+                <p>Currently pursuing IT degree, focusing on modern web technologies</p>
+            </div>
+            <div class="highlight-card">
+                <span class="icon">💻</span>
+                <h3>Focus Area</h3>
+                <p>Full-stack development with emphasis on user experience</p>
+            </div>
+            <div class="highlight-card">
+                <span class="icon">🚀</span>
+                <h3>Goal</h3>
+                <p>Building innovative solutions that make a difference</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section id="skills">
+    <div class="skills-container">
+        <h2 class="section-title">Skills</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <span class="skill-icon">🌐</span>
+                <h3>HTML & CSS</h3>
+            </div>
+            <div class="skill-card">
+                <span class="skill-icon">⚡</span>
+                <h3>JavaScript</h3>
+            </div>
+            <div class="skill-card">
+                <span class="skill-icon">🐍</span>
+                <h3>Python</h3>
+            </div>
+            <div class="skill-card">
+                <span class="skill-icon">📦</span>
+                <h3>Git & GitHub</h3>
+            </div>
+            <div class="skill-card">
+                <span class="skill-icon">⚛️</span>
+                <h3>React</h3>
+            </div>
+            <div class="skill-card">
+                <span class="skill-icon">🟢</span>
+                <h3>Node.js</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects">
+    <div class="projects-container">
+        <h2 class="section-title">Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <h3>Portfolio Website</h3>
+                <p>Responsive portfolio using HTML, CSS, and JavaScript.</p>
+            </div>
+
+            <div class="project-card">
+                <h3>Chat Application</h3>
+                <p>Real-time chat app built with Node.js and Socket.io.</p>
+            </div>
+
+            <!-- SNAKE GAME PROJECT -->
+            <div class="project-card">
+                <h3>Snake Game</h3>
+                <p>Classic Snake game built with JavaScript & Canvas.</p>
+
+                <div class="snake-game">
+                    <div class="score-board">Score: <span class="score">0</span></div>
+                    <div style="position:relative">
+                        <canvas width="300" height="300"></canvas>
+                        <div class="gameOverScreen">
+                            <p>Game Over</p>
+                            <button>Play Again</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Certifications Section -->
+<section id="certifications">
+    <div class="cert-container">
+        <h2 class="section-title">Certifications</h2>
+        <ul class="cert-list">
+            <li>Cisco Networking Academy</li>
+            <li>Web Development Bootcamp</li>
+            <li>AWS Cloud Practitioner</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Activities Section -->
+<section id="activities">
+    <div class="activities-container">
+        <h2 class="section-title">Extracurricular Activities</h2>
+        <ul class="activities-list">
+            <li>Coding Club Member</li>
+            <li>IT Support Volunteer</li>
+            <li>Programming Competitions</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact">
+    <div class="contact-container">
+        <h2 class="section-title">Contact</h2>
+        <div class="contact-info">
+            <div class="contact-item">
+                <strong>Email:</strong> jonasbanay20@gmail.com
+            </div>
+            <div class="contact-item">
+                <strong>GitHub:</strong> <a href="https://github.com/LeLebron23" target="_blank">github.com/LeLebron23</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2026 Jonas Banay | All Rights Reserved</p>
+</footer>
+
+<script>
+(() => {
+    const game = document.querySelector('.snake-game');
+    const canvas = game.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = game.querySelector('.score');
+    const gameOverScreen = game.querySelector('.gameOverScreen');
+    const btn = game.querySelector('button');
+
+    const size = 15;
+    let snake, food, dir, score, loop;
+
+    function start() {
+        snake = [{x:5,y:5},{x:4,y:5},{x:3,y:5}];
+        dir = 'RIGHT';
+        score = 0;
+        scoreEl.textContent = score;
+        gameOverScreen.classList.remove('show');
+        spawn();
+        clearInterval(loop);
+        loop = setInterval(update, 120);
+    }
+
+    function spawn() {
+        food = {x:Math.floor(Math.random()*20),y:Math.floor(Math.random()*20)};
+    }
+
+    function update() {
+        const h = {...snake[0]};
+        if(dir==='UP')h.y--;
+        if(dir==='DOWN')h.y++;
+        if(dir==='LEFT')h.x--;
+        if(dir==='RIGHT')h.x++;
+
+        if(h.x<0||h.y<0||h.x>=20||h.y>=20||snake.some(s=>s.x===h.x&&s.y===h.y)){
+            clearInterval(loop);
+            gameOverScreen.classList.add('show');
+            return;
+        }
+
+        snake.unshift(h);
+        if(h.x===food.x&&h.y===food.y){
+            score+=10;
+            scoreEl.textContent=score;
+            spawn();
+        } else snake.pop();
+
+        ctx.fillStyle='#9bbc0f';
+        ctx.fillRect(0,0,300,300);
+        ctx.fillStyle='#306230';
+        ctx.fillRect(food.x*size,food.y*size,size,size);
+        snake.forEach((s,i)=>{
+            ctx.fillStyle=i? '#306230':'#1F6F43';
+            ctx.fillRect(s.x*size,s.y*size,size,size);
+        });
+    }
+
+    document.addEventListener('keydown', e => {
+        if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) {
+            e.preventDefault();
+        }
+
+        if(e.key==='ArrowUp'&&dir!=='DOWN')dir='UP';
+        if(e.key==='ArrowDown'&&dir!=='UP')dir='DOWN';
+        if(e.key==='ArrowLeft'&&dir!=='RIGHT')dir='LEFT';
+        if(e.key==='ArrowRight'&&dir!=='LEFT')dir='RIGHT';
+    });
+
+    btn.onclick = start;
+    start();
+})();
+</script>
+
+</body>
+</html>
