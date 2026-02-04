@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events | JPCS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body> <nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">💻</span>
+            <span class="logo-text">JPCS</span>
+        </a>
+
+        <button class="mobile-menu-toggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="officers.html">Officers</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="membership.html">Join Us</a></li>
+        </ul>
+    </div>
+</nav>
+    <section id="events" style="padding-top: 120px;">
+        <div class="container">
+            <h2 class="section-title">Events & Activities</h2>
+            
+            <div class="event-filters">
+                <button class="filter-btn active" data-filter="all">All Events</button>
+                <button class="filter-btn" data-filter="workshop">Workshops</button>
+                <button class="filter-btn" data-filter="seminar">Seminars</button>
+                <button class="filter-btn" data-filter="hackathon">Hackathons</button>
+            </div>
+
+            <div class="events-grid" id="events-grid">
+                </div>
+        </div>
+    </section>
+
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <footer><p>&copy; 2026 JPCS</p></footer>
+    <script src="script.js"></script>
+</body>
+</html>

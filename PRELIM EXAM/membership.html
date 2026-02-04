@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Us | JPCS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body> <nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">💻</span>
+            <span class="logo-text">JPCS</span>
+        </a>
+
+        <button class="mobile-menu-toggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="officers.html">Officers</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="membership.html">Join Us</a></li>
+        </ul>
+    </div>
+</nav>
+    <section id="membership" style="padding-top: 120px;">
+        <div class="container">
+            <h2 class="section-title">Join JPCS</h2>
+            <div class="membership-content">
+                <div class="membership-info">
+                    <h3>Why Join Us?</h3>
+                    <ul class="benefits-list">
+                        <li>Skill Development</li>
+                        <li>Networking</li>
+                        <li>Career Opportunities</li>
+                    </ul>
+                </div>
+                
+                <div class="registration-form-container">
+                    <h3>Membership Registration</h3>
+                    <form id="membership-form" class="membership-form">
+    <div class="form-progress">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-text">Step <span id="current-step">1</span> of 3</div>
+    </div>
+
+    <div class="form-step active" data-step="1">
+        <h4>🙋‍♂️ Personal Information</h4>
+        
+        <div class="form-row" style="display: flex; gap: 20px;">
+            <div class="form-group" style="flex: 1;">
+                <label for="fullName">Full Name *</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Juan Dela Cruz" required>
+                <span class="error-message"></span>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label for="nickname">Nickname (Optional)</label>
+                <input type="text" id="nickname" name="nickname" placeholder="Juany">
+            </div>
+        </div>
+
+        <div class="form-row" style="display: flex; gap: 20px;">
+            <div class="form-group" style="flex: 1;">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" placeholder="juan@student.school.edu" required>
+                <span class="error-message"></span>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label for="phone">Mobile Number *</label>
+                <input type="tel" id="phone" name="phone" placeholder="0912 345 6789" required>
+                <span class="error-message"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="birthdate">Date of Birth *</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+            <span class="error-message"></span>
+        </div>
+
+        <h5 style="color: var(--primary); margin: 15px 0 10px; font-size: 1rem;">🚨 In Case of Emergency</h5>
+        <div class="form-row" style="display: flex; gap: 20px;">
+            <div class="form-group" style="flex: 1;">
+                <label for="emergencyName">Guardian/Contact Name *</label>
+                <input type="text" id="emergencyName" name="emergencyName" required>
+                <span class="error-message"></span>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label for="emergencyPhone">Guardian Contact No. *</label>
+                <input type="tel" id="emergencyPhone" name="emergencyPhone" required>
+                <span class="error-message"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-step" data-step="2">
+        <h4>🎓 Academic & Tech Profile</h4>
+        
+        <div class="form-row" style="display: flex; gap: 20px;">
+            <div class="form-group" style="flex: 1;">
+                <label for="studentId">Student ID Number *</label>
+                <input type="text" id="studentId" name="studentId" required>
+                <span class="error-message"></span>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label for="yearLevel">Year Level *</label>
+                <select id="yearLevel" name="yearLevel" required>
+                    <option value="">Select Year</option>
+                    <option value="1">1st Year</option>
+                    <option value="2">2nd Year</option>
+                    <option value="3">3rd Year</option>
+                    <option value="4">4th Year</option>
+                </select>
+                <span class="error-message"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="course">Course/Program *</label>
+            <select id="course" name="course" required>
+                <option value="">Select your course</option>
+                <option value="BSIT">BS Information Technology</option>
+                <option value="BSCS">BS Computer Science</option>
+                <option value="BSCpE">BS Computer Engineering</option>
+                <option value="BSIS">BS Information Systems</option>
+                <option value="Other">Other</option>
+            </select>
+            <span class="error-message"></span>
+        </div>
+
+        <h5 style="color: var(--primary); margin: 15px 0 10px; font-size: 1rem;">🌐 Digital Footprint (Optional)</h5>
+        <div class="form-group">
+            <label for="discord">Discord Username (for our server)</label>
+            <input type="text" id="discord" name="discord" placeholder="username#1234">
+        </div>
+        <div class="form-group">
+            <label for="github">GitHub/Portfolio Link</label>
+            <input type="url" id="github" name="github" placeholder="https://github.com/yourname">
+        </div>
+    </div>
+
+    <div class="form-step" data-step="3">
+        <h4>👕 Logistics & Interests</h4>
+
+        <div class="form-group">
+            <label for="shirtSize">T-Shirt Size (Asian Fit) *</label>
+            <select id="shirtSize" name="shirtSize" required>
+                <option value="">Select Size</option>
+                <option value="XS">XS</option>
+                <option value="S">Small</option>
+                <option value="M">Medium</option>
+                <option value="L">Large</option>
+                <option value="XL">XL</option>
+                <option value="2XL">2XL</option>
+            </select>
+            <span class="error-message"></span>
+        </div>
+
+        <div class="form-group">
+            <label>Which teams are you interested in joining?</label>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="interests" value="web-dev">
+                    <span>🕸️ Web Dev Team</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="interests" value="creative">
+                    <span>🎨 Creative/Design</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="interests" value="events">
+                    <span>📋 Events Management</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="interests" value="cybersecurity">
+                    <span>🔒 Cybersecurity</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="interests" value="game-dev">
+                    <span>🎮 Game Dev</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="expectations">One thing you want to learn this year?</label>
+            <textarea id="expectations" name="expectations" rows="3" placeholder="e.g. How to deploy a website, Python basics..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" id="terms" name="terms" required>
+                <span>I agree to the JPCS Data Privacy Policy *</span>
+            </label>
+            <span class="error-message"></span>
+        </div>
+    </div>
+
+    <div class="form-navigation">
+        <button type="button" class="btn-secondary" id="prev-btn" style="display: none;">Previous</button>
+        <button type="button" class="btn-primary" id="next-btn">Next</button>
+        <button type="submit" class="btn-primary" id="submit-btn" style="display: none;">Submit Registration</button>
+    </div>
+</form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer><p>&copy; 2026 JPCS</p></footer>
+    <script src="script.js"></script>
+</body>
+</html>
