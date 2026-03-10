@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify, send_file
 import os
-import json
 from scraper import run_scraper, load_games, BASE_URL, DATA_FILE, CSV_FILE
 
 app = Flask(__name__)
@@ -39,13 +38,13 @@ def games_api():
 def download_json():
     if os.path.exists(DATA_FILE):
         return send_file(DATA_FILE, as_attachment=True, download_name="metacritic_games.json")
-    return "No data yet. Run a scrape first.", 404
+    return "No data yet.", 404
 
 @app.route("/download/csv")
 def download_csv():
     if os.path.exists(CSV_FILE):
         return send_file(CSV_FILE, as_attachment=True, download_name="metacritic_games.csv")
-    return "No data yet. Run a scrape first.", 404
+    return "No data yet.", 404
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=False, port=5000, threaded=True)
