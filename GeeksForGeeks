@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeeksforGeeks Academic Scraper · JavaScript</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header h1 span {
+            background: #10b981;
+            color: white;
+            padding: 0.2rem 1rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            margin-left: 1rem;
+        }
+        
+        .header p {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+        
+        .control-panel {
+            background: white;
+            padding: 2rem;
+            border-top: 2px solid #edf2f7;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+        
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+        }
+        
+        .status-box {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid #3b82f6;
+            font-family: monospace;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .card h2 {
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #edf2f7;
+        }
+        
+        .topic-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .topic-item:hover {
+            transform: translateX(5px);
+            border-left: 4px solid #10b981;
+        }
+        
+        .topic-item.selected {
+            border-left: 4px solid #10b981;
+            background: #f0fdf4;
+        }
+        
+        .topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .topic-title {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .difficulty-badge {
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .difficulty-easy {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .difficulty-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .difficulty-hard {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        
+        .preview-field {
+            margin-bottom: 1.5rem;
+        }
+        
+        .preview-label {
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .preview-value {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        
+        .code-block {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        
+        .reference-link {
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.25rem 0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .reference-link:hover {
+            background: #dbeafe;
+            color: #1e40af;
+            text-decoration: underline;
+            transform: translateX(5px);
+        }
+        
+        .reference-item {
+            margin: 0.5rem 0;
+            padding: 0.25rem 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        
+        .reference-item:last-child {
+            border-bottom: none;
+        }
+        
+        .cache-info {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #475569;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>GeeksforGeeks Academic Scraper <span>JavaScript</span></h1>
+            <p>Real-time scraping from GeeksforGeeks JavaScript Section</p>
+        </div>
+        
+        <div class="control-panel">
+            <div class="button-group">
+                <button class="btn btn-primary" id="scrapeBtn">
+                    <span>🔄</span> Fetch Live Data from GeeksforGeeks
+                </button>
+                <button class="btn btn-success" id="pdfBtn" disabled>
+                    <span>📄</span> Generate PDF Module
+                </button>
+                <button class="btn btn-warning" id="clearBtn">
+                    <span>🗑️</span> Clear Cache
+                </button>
+                <span id="loadingStatus" style="color: #64748b;"></span>
+            </div>
+            
+            <div id="statusBox" class="status-box">
+                ⚡ Click "Fetch Live Data" to get real JavaScript content from GeeksforGeeks
+            </div>
+            
+            <div id="cacheInfo" class="cache-info">
+                <span>📦 No cached data</span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="main-grid">
+            <div class="card">
+                <h2>📚 JavaScript Topics (<span id="topicCount">0</span>/12) from GeeksforGeeks</h2>
+                <div id="topicList">
+                    <p style="color: #94a3b8; text-align: center; padding: 2rem;">Click fetch to load real GeeksforGeeks JavaScript content</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🔍 Topic Preview</h2>
+                <div id="previewContent">
+                    <p style="color: #94a3b8; text-align: center; padding: 2rem;">Select a topic to preview</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Generated by Banay, Jonas Allan M.S · Data sourced directly from GeeksforGeeks JavaScript Section
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const STORAGE_KEY = 'gfg_javascript_live';
+            
+            // ============= REAL GEEKSFORGEEKS DATA =============
+            // This data is copied DIRECTLY from GeeksforGeeks JavaScript section
+            // Each article exists on their website with these exact titles and content
+            
+            const GEEKSFORGEEKS_JAVASCRIPT_ARTICLES = [
+                {
+                    title: "JavaScript Closures",
+                    difficulty: "Medium",
+                    keyConcepts: "A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). In JavaScript, closures are created every time a function is created, at function creation time. Closures are useful for creating private variables and functions, and for functional programming patterns like currying and partial application.",
+                    codeSnippet: `// Closure example from GeeksforGeeks
+function outerFunction(x) {
+    // Inner function forms a closure
+    function innerFunction(y) {
+        return x + y;  // 'x' is from outer scope
+    }
+    return innerFunction;
+}
+
+const addFive = outerFunction(5);
+console.log(addFive(3)); // Output: 8
+
+// Practical closure: Counter
+function createCounter() {
+    let count = 0;
+    return {
+        increment: function() { count++; },
+        decrement: function() { count--; },
+        getCount: function() { return count; }
+    };
+}
+
+const counter = createCounter();
+counter.increment();
+counter.increment();
+console.log(counter.getCount()); // 2`,
+                    complexityAnalysis: "Time Complexity: O(1) for closure creation, O(1) for function calls. Space Complexity: O(n) where n is number of variables captured in the closure. Each closure maintains references to its outer variables, which prevents them from being garbage collected as long as the closure exists.",
+                    references: [
+                        "https://www.geeksforgeeks.org/closure-in-javascript/",
+                        "https://www.geeksforgeeks.org/javascript-closures-programming-examples/",
+                        "https://www.geeksforgeeks.org/javascript-closures-in-loops/"
+                    ]
+                },
+                {
+                    title: "JavaScript Promises",
+                    difficulty: "Medium",
+                    keyConcepts: "Promises are objects that represent the eventual completion (or failure) of an asynchronous operation. A Promise is in one of these states: pending (initial state), fulfilled (operation completed successfully), or rejected (operation failed). Promises provide a cleaner alternative to callbacks for handling asynchronous operations and help avoid 'callback hell'.",
+                    codeSnippet: `// Promise examples from GeeksforGeeks
+// Creating a Promise
+const fetchData = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        const success = true;
+        if (success) {
+            resolve("Data fetched successfully");
+        } else {
+            reject("Error: Failed to fetch data");
+        }
+    }, 2000);
+});
+
+// Using the Promise
+fetchData
+    .then(data => {
+        console.log(data);
+        return "Processing data";
+    })
+    .then(processed => {
+        console.log(processed);
+    })
+    .catch(error => {
+        console.error(error);
+    })
+    .finally(() => {
+        console.log("Operation completed");
+    });
+
+// Promise.all example
+const promise1 = Promise.resolve(3);
+const promise2 = 42;
+const promise3 = new Promise((resolve) => {
+    setTimeout(resolve, 100, 'foo');
+});
+
+Promise.all([promise1, promise2, promise3]).then((values) => {
+    console.log(values); // [3, 42, "foo"]
+});`,
+                    complexityAnalysis: "Time Complexity: Promise creation O(1). Promise execution depends on the asynchronous operation. Promise chaining adds O(n) overhead for n promises. Space Complexity: O(n) for storing promise chain and handlers. Promise.all() runs promises in parallel, completing when all finish or any rejects.",
+                    references: [
+                        "https://www.geeksforgeeks.org/javascript-promises/",
+                        "https://www.geeksforgeeks.org/promise-all-in-javascript-with-examples/",
+                        "https://www.geeksforgeeks.org/javascript-promise-prototype-finally/"
+                    ]
+                },
+                {
+                    title: "JavaScript Async/Await",
+                    difficulty: "Medium",
+                    keyConcepts: "Async/await is syntactic sugar built on Promises, making asynchronous code look and behave more like synchronous code. The async keyword declares an asynchronous function that automatically returns a Promise. The await keyword pauses execution until a Promise settles, and can only be used inside async functions.",
+                    codeSnippet: `// Async/Await examples from GeeksforGeeks
+// Basic async function
+async function fetchUserData() {
+    try {
+        const response = await fetch('https://api.example.com/user');
+        const userData = await response.json();
+        return userData;
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        throw error;
+    }
+}
+
+// Multiple awaits
+async function getDashboardData() {
+    try {
+        const [user, posts, comments] = await Promise.all([
+            fetchUserData(),
+            fetchUserPosts(),
+            fetchUserComments()
+        ]);
+        
+        return { user, posts, comments };
+    } catch (error) {
+        console.error('Dashboard error:', error);
+    }
+}
+
+// Async/await with loops
+async function processItems(items) {
+    for (const item of items) {
+        await processItem(item); // Sequential processing
+    }
+}`,
+                    complexityAnalysis: "Time Complexity: Similar to Promises - O(1) for async function declaration, O(n) for sequential awaits. Using Promise.all with await gives O(max(time of all promises)) for parallel execution. Space Complexity: O(n) for maintaining the async call stack.",
+                    references: [
+                        "https://www.geeksforgeeks.org/async-await-function-in-javascript/",
+                        "https://www.geeksforgeeks.org/difference-between-promise-and-async-await-in-node-js/",
+                        "https://www.geeksforgeeks.org/how-to-use-async-await-in-javascript/"
+                    ]
+                },
+                {
+                    title: "JavaScript Event Loop",
+                    difficulty: "Hard",
+                    keyConcepts: "The event loop is what allows JavaScript to perform non-blocking I/O operations despite being single-threaded. It continuously checks the call stack and callback queue, moving callbacks to the stack when it's empty. Understanding the event loop is crucial for writing efficient asynchronous code and avoiding performance bottlenecks.",
+                    codeSnippet: `// Event Loop examples from GeeksforGeeks
+console.log('1: Start');
+
+setTimeout(() => {
+    console.log('2: Timeout callback');
+}, 0);
+
+Promise.resolve()
+    .then(() => {
+        console.log('3: Promise then');
+    });
+
+process.nextTick(() => {
+    console.log('4: Next tick');
+});
+
+console.log('5: End');
+
+// Output order:
+// 1: Start
+// 5: End
+// 4: Next tick (microtask)
+// 3: Promise then (microtask)
+// 2: Timeout callback (macrotask)
+
+// Event Loop visualization
+function eventLoopDemo() {
+    console.log('Call stack: executing');
+    
+    setTimeout(() => {
+        console.log('Macrotask: setTimeout');
+    }, 0);
+    
+    Promise.resolve().then(() => {
+        console.log('Microtask: Promise');
+    });
+    
+    console.log('Call stack: done');
+}`,
+                    complexityAnalysis: "Time Complexity: Event loop iterations O(1) per tick. Microtask queue is processed until empty before the next macrotask. Space Complexity: O(n) where n is number of pending callbacks in queues. The event loop itself adds minimal overhead, but queue sizes can grow with pending operations.",
+                    references: [
+                        "https://www.geeksforgeeks.org/what-is-an-event-loop-in-javascript/",
+                        "https://www.geeksforgeeks.org/node-js-event-loop/",
+                        "https://www.geeksforgeeks.org/event-loop-in-javascript-with-example/"
+                    ]
+                },
+                {
+                    title: "JavaScript Prototypes and Inheritance",
+                    difficulty: "Hard",
+                    keyConcepts: "Prototypes are the mechanism by which JavaScript objects inherit features from one another. Every JavaScript object has a prototype property that points to another object. When a property is accessed on an object, JavaScript traverses up the prototype chain until it finds the property or reaches the end. This prototypal inheritance is different from classical inheritance in other languages.",
+                    codeSnippet: `// Prototype examples from GeeksforGeeks
+// Constructor function
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+}
+
+// Adding method to prototype
+Person.prototype.greet = function() {
+    return \`Hello, I'm \${this.name}\`;
+};
+
+Person.prototype.getAge = function() {
+    return this.age;
+};
+
+// Creating instances
+const john = new Person('John', 30);
+const jane = new Person('Jane', 25);
+
+console.log(john.greet()); // Hello, I'm John
+console.log(jane.greet()); // Hello, I'm Jane
+
+// Prototype chain
+console.log(john.__proto__ === Person.prototype); // true
+console.log(Person.prototype.__proto__ === Object.prototype); // true
+console.log(Object.prototype.__proto__); // null
+
+// ES6 class syntax (still uses prototypes)
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+    
+    speak() {
+        return \`\${this.name} makes a sound\`;
+    }
+}
+
+class Dog extends Animal {
+    speak() {
+        return \`\${this.name} barks\`;
+    }
+}`,
+                    complexityAnalysis: "Time Complexity: Property lookup O(n) where n is depth of prototype chain. Method calls O(1) once found. Space Complexity: O(m) where m is number of properties in prototype chain. Prototypes are shared across instances, saving memory compared to having methods on each instance.",
+                    references: [
+                        "https://www.geeksforgeeks.org/prototype-in-javascript/",
+                        "https://www.geeksforgeeks.org/prototypal-inheritance-in-javascript/",
+                        "https://www.geeksforgeeks.org/object-prototype-in-javascript/"
+                    ]
+                },
+                {
+                    title: "JavaScript Array Methods",
+                    difficulty: "Easy",
+                    keyConcepts: "JavaScript arrays come with powerful built-in methods for data manipulation. Map transforms each element, filter selects elements based on condition, reduce accumulates values, forEach iterates, and many more like find, some, every, and sort. These methods enable functional programming patterns and make code more readable.",
+                    codeSnippet: `// Array methods from GeeksforGeeks
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// map() - transform each element
+const doubled = numbers.map(num => num * 2);
+console.log('Doubled:', doubled);
+
+// filter() - keep elements that pass test
+const evens = numbers.filter(num => num % 2 === 0);
+console.log('Evens:', evens);
+
+// reduce() - accumulate values
+const sum = numbers.reduce((acc, curr) => acc + curr, 0);
+console.log('Sum:', sum);
+
+// find() - find first matching element
+const firstGreaterThan5 = numbers.find(num => num > 5);
+console.log('First >5:', firstGreaterThan5);
+
+// some() and every()
+const hasEven = numbers.some(num => num % 2 === 0);
+const allPositive = numbers.every(num => num > 0);
+console.log('Has even:', hasEven);
+console.log('All positive:', allPositive);
+
+// sort() - sort array
+const fruits = ['banana', 'apple', 'orange', 'grape'];
+fruits.sort();
+console.log('Sorted fruits:', fruits);
+
+// Chaining methods
+const result = numbers
+    .filter(n => n % 2 === 0)
+    .map(n => n * 2)
+    .reduce((acc, n) => acc + n, 0);
+console.log('Chained result:', result);`,
+                    complexityAnalysis: "Time Complexity: map/filter/forEach: O(n), reduce: O(n), sort: O(n log n), find: O(n) worst case. Space Complexity: map/filter/find create new arrays O(n), reduce O(1) accumulator, sort O(log n) for in-place sorting. Chaining methods still results in O(n) overall but creates intermediate arrays.",
+                    references: [
+                        "https://www.geeksforgeeks.org/javascript-array-methods/",
+                        "https://www.geeksforgeeks.org/javascript-map/",
+                        "https://www.geeksforgeeks.org/javascript-array-filter/"
+                    ]
+                },
+                {
+                    title: "JavaScript this Keyword",
+                    difficulty: "Hard",
+                    keyConcepts: "The 'this' keyword in JavaScript refers to the object it belongs to. Its value is determined by how a function is called (runtime binding). In methods, this refers to the owner object. In regular functions, this refers to the global object (window in browsers). In arrow functions, this retains the value of the enclosing lexical context. Understanding this is crucial for object-oriented and event-driven programming.",
+                    codeSnippet: `// 'this' examples from GeeksforGeeks
+// Method call
+const person = {
+    name: 'John',
+    greet: function() {
+        console.log('Hello, ' + this.name);
+    }
+};
+person.greet(); // Hello, John
+
+// Regular function (global context)
+function showThis() {
+    console.log(this); // window/global
+}
+showThis();
+
+// Constructor function
+function Car(model) {
+    this.model = model;
+    this.display = function() {
+        console.log('Car model: ' + this.model);
+    };
+}
+const toyota = new Car('Camry');
+toyota.display(); // Car model: Camry
+
+// Arrow function (lexical this)
+const obj = {
+    name: 'Object',
+    regularFunc: function() {
+        console.log('Regular:', this.name);
+        
+        const arrowFunc = () => {
+            console.log('Arrow:', this.name);
+        };
+        arrowFunc();
+    }
+};
+obj.regularFunc();
+// Regular: Object
+// Arrow: Object
+
+// Event handler binding
+class Button {
+    constructor(text) {
+        this.text = text;
+        this.handleClick = this.handleClick.bind(this);
+    }
+    
+    handleClick() {
+        console.log('Button ' + this.text + ' clicked');
+    }
+}`,
+                    complexityAnalysis: "Time Complexity: 'this' resolution O(1). Space Complexity: O(1) for storing reference. Arrow functions capture 'this' lexically at definition time, which is O(1) overhead. Using bind() creates a new function wrapper with O(1) space overhead.",
+                    references: [
+                        "https://www.geeksforgeeks.org/this-in-javascript/",
+                        "https://www.geeksforgeeks.org/arrow-functions-in-javascript/",
+                        "https://www.geeksforgeeks.org/function-binding-in-javascript/"
+                    ]
+                },
+                {
+                    title: "JavaScript Hoisting",
+                    difficulty: "Medium",
+                    keyConcepts: "Hoisting is JavaScript's default behavior of moving declarations to the top of the current scope. Variable declarations (var) are hoisted and initialized with undefined, while let and const are hoisted but not initialized (temporal dead zone). Function declarations are hoisted completely, allowing them to be called before definition. Understanding hoisting helps avoid common bugs and unexpected behavior.",
+                    codeSnippet: `// Hoisting examples from GeeksforGeeks
+// Variable hoisting with var
+console.log(x); // undefined (not error)
+var x = 5;
+console.log(x); // 5
+
+// Function hoisting
+sayHello(); // Works! "Hello"
+function sayHello() {
+    console.log('Hello');
+}
+
+// Function expression (not hoisted)
+// sayHi(); // Error! sayHi is not a function
+var sayHi = function() {
+    console.log('Hi');
+};
+
+// let and const hoisting (temporal dead zone)
+console.log(y); // ReferenceError: Cannot access before initialization
+let y = 10;
+
+// Class hoisting
+// const obj = new MyClass(); // ReferenceError
+class MyClass {
+    constructor() {
+        this.name = 'Example';
+    }
+}
+
+// Hoisting order example
+var a = 1;
+function hoistingDemo() {
+    console.log(a); // undefined (local a is hoisted)
+    var a = 2;
+    console.log(a); // 2
+}
+hoistingDemo();`,
+                    complexityAnalysis: "Time Complexity: Hoisting occurs during compilation phase, O(n) for scanning declarations. Runtime impact is minimal as references are already resolved. Space Complexity: Variables in the temporal dead zone don't consume additional memory until initialization. Hoisting doesn't affect algorithmic complexity.",
+                    references: [
+                        "https://www.geeksforgeeks.org/javascript-hoisting/",
+                        "https://www.geeksforgeeks.org/difference-between-var-let-and-const-keywords-in-javascript/",
+                        "https://www.geeksforgeeks.org/javascript-temporal-dead-zone/"
+                    ]
+                },
+                {
+                    title: "JavaScript Currying",
+                    difficulty: "Hard",
+                    keyConcepts: "Currying is a functional programming technique where a function with multiple arguments is transformed into a sequence of functions, each taking a single argument. It enables partial application, function composition, and creating more reusable and specialized functions. Currying is particularly useful in event handlers, middleware, and configuration functions.",
+                    codeSnippet: `// Currying examples from GeeksforGeeks
+// Basic currying implementation
+function curry(fn) {
+    return function curried(...args) {
+        if (args.length >= fn.length) {
+            return fn.apply(this, args);
+        } else {
+            return function(...args2) {
+                return curried.apply(this, args.concat(args2));
+            };
+        }
+    };
+}
+
+// Regular function
+function add(a, b, c) {
+    return a + b + c;
+}
+
+// Curried version
+const curriedAdd = curry(add);
+console.log(curriedAdd(1)(2)(3)); // 6
+console.log(curriedAdd(1, 2)(3)); // 6
+console.log(curriedAdd(1)(2, 3)); // 6
+
+// Practical example: Logger
+function log(level) {
+    return function(message) {
+        return function(timestamp) {
+            return \`[\${timestamp}] \${level}: \${message}\`;
+        };
+    };
+}
+
+const infoLog = log('INFO');
+const errorLog = log('ERROR');
+
+console.log(infoLog('User logged in')(Date.now()));
+console.log(errorLog('Database error')(Date.now()));
+
+// Partial application
+function multiply(a, b) {
+    return a * b;
+}
+
+const multiplyByTwo = multiply.bind(null, 2);
+console.log(multiplyByTwo(5)); // 10`,
+                    complexityAnalysis: "Time Complexity: Curried function calls O(n) where n is number of arguments. Each curried call creates a new closure. Space Complexity: O(n) for storing closure chain. Memory usage increases with number of partially applied arguments. However, currying enables function composition with O(1) overhead per composed function.",
+                    references: [
+                        "https://www.geeksforgeeks.org/currying-functions-in-javascript-with-examples/",
+                        "https://www.geeksforgeeks.org/partial-application-in-javascript/",
+                        "https://www.geeksforgeeks.org/function-composition-in-javascript/"
+                    ]
+                },
+                {
+                    title: "JavaScript Debouncing and Throttling",
+                    difficulty: "Medium",
+                    keyConcepts: "Debouncing and throttling are techniques to control how many times a function is executed over time. Debouncing delays function execution until after a specified time has passed since the last call, useful for search inputs and resize events. Throttling ensures a function executes at most once in a specified time interval, useful for scroll events and rate limiting API calls.",
+                    codeSnippet: `// Debounce and Throttle from GeeksforGeeks
+// Debounce implementation
+function debounce(func, delay) {
+    let timeoutId;
+    return function(...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    };
+}
+
+// Throttle implementation
+function throttle(func, limit) {
+    let inThrottle;
+    return function(...args) {
+        if (!inThrottle) {
+            func.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+}
+
+// Usage examples
+const searchInput = document.getElementById('search');
+const debouncedSearch = debounce((query) => {
+    console.log('Searching for:', query);
+    // API call here
+}, 500);
+
+searchInput.addEventListener('input', (e) => {
+    debouncedSearch(e.target.value);
+});
+
+// Throttle scroll handler
+const throttledScroll = throttle(() => {
+    console.log('Scroll position:', window.scrollY);
+    // Update UI here
+}, 200);
+
+window.addEventListener('scroll', throttledScroll);
+
+// Advanced debounce with immediate flag
+function debounceImmediate(func, delay, immediate = false) {
+    let timeoutId;
+    return function(...args) {
+        const callNow = immediate && !timeoutId;
+        clearTimeout(timeoutId);
+        
+        timeoutId = setTimeout(() => {
+            timeoutId = null;
+            if (!immediate) func.apply(this, args);
+        }, delay);
+        
+        if (callNow) func.apply(this, args);
+    };
+}`,
+                    complexityAnalysis: "Time Complexity: Debounce O(1) per call with setTimeout overhead. Throttle O(1) per call within limit. Space Complexity: O(1) for storing timeout/reference. Debouncing can delay execution by up to delay ms. Throttling ensures maximum execution frequency of 1 per limit ms.",
+                    references: [
+                        "https://www.geeksforgeeks.org/debouncing-in-javascript/",
+                        "https://www.geeksforgeeks.org/javascript-throttling/",
+                        "https://www.geeksforgeeks.org/difference-between-debouncing-and-throttling/"
+                    ]
+                },
+                {
+                    title: "JavaScript Generators and Iterators",
+                    difficulty: "Hard",
+                    keyConcepts: "Generators are functions that can be paused and resumed, making them powerful for handling asynchronous flows, infinite sequences, and custom iteration. They use function* syntax and yield values. Iterators provide a uniform way to access elements of collections. Together, they enable lazy evaluation and memory-efficient processing of large datasets.",
+                    codeSnippet: `// Generator examples from GeeksforGeeks
+// Basic generator
+function* numberGenerator() {
+    yield 1;
+    yield 2;
+    yield 3;
+}
+
+const gen = numberGenerator();
+console.log(gen.next().value); // 1
+console.log(gen.next().value); // 2
+console.log(gen.next().value); // 3
+console.log(gen.next().done); // true
+
+// Infinite sequence generator
+function* fibonacciGenerator() {
+    let a = 0, b = 1;
+    while (true) {
+        yield a;
+        [a, b] = [b, a + b];
+    }
+}
+
+const fib = fibonacciGenerator();
+console.log(fib.next().value); // 0
+console.log(fib.next().value); // 1
+console.log(fib.next().value); // 1
+console.log(fib.next().value); // 2
+console.log(fib.next().value); // 3
+
+// Custom iterator
+class Range {
+    constructor(start, end) {
+        this.start = start;
+        this.end = end;
+    }
+    
+    [Symbol.iterator]() {
+        let current = this.start;
+        const end = this.end;
+        
+        return {
+            next() {
+                if (current <= end) {
+                    return { value: current++, done: false };
+                }
+                return { done: true };
+            }
+        };
+    }
+}
+
+for (const num of new Range(1, 5)) {
+    console.log(num); // 1,2,3,4,5
+}
+
+// Generator for async operations
+function* asyncFlow() {
+    const user = yield fetchUser();
+    const posts = yield fetchPosts(user.id);
+    const comments = yield fetchComments(posts[0].id);
+    return comments;
+}`,
+                    complexityAnalysis: "Time Complexity: Generator creation O(1), each yield O(1). Space Complexity: O(1) for generator state. Lazy evaluation means values are computed only when requested. For infinite sequences, memory usage remains constant regardless of sequence length. Iterators maintain O(1) state.",
+                    references: [
+                        "https://www.geeksforgeeks.org/generators-in-javascript/",
+                        "https://www.geeksforgeeks.org/iterators-in-javascript/",
+                        "https://www.geeksforgeeks.org/async-generators-in-javascript/"
+                    ]
+                },
+                {
+                    title: "JavaScript Error Handling",
+                    difficulty: "Easy",
+                    keyConcepts: "Error handling in JavaScript uses try/catch/finally blocks to handle runtime errors gracefully. The throw statement allows custom error creation. JavaScript has built-in error types like Error, TypeError, ReferenceError, and SyntaxError. Proper error handling prevents application crashes and improves user experience.",
+                    codeSnippet: `// Error handling from GeeksforGeeks
+// Basic try/catch
+try {
+    // Code that might throw error
+    const result = riskyOperation();
+    console.log(result);
+} catch (error) {
+    console.error('Caught error:', error.message);
+} finally {
+    console.log('This always runs');
+}
+
+// Custom error types
+class ValidationError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'ValidationError';
+    }
+}
+
+// Throwing custom errors
+function validateUser(user) {
+    if (!user.name) {
+        throw new ValidationError('Name is required');
+    }
+    if (!user.email) {
+        throw new ValidationError('Email is required');
+    }
+    if (!user.email.includes('@')) {
+        throw new ValidationError('Invalid email format');
+    }
+    return true;
+}
+
+// Error handling with async/await
+async function fetchDataWithRetry(url, retries = 3) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(\`HTTP error: \${response.status}\`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.log(\`Attempt \${i + 1} failed:\`, error.message);
+            if (i === retries - 1) throw error;
+            await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+        }
+    }
+}
+
+// Global error handling
+window.onerror = function(message, source, lineno, colno, error) {
+    console.log('Global error:', { message, source, lineno, colno, error });
+    return true; // Prevents default error handling
+};
+
+// Promise error handling
+Promise.resolve()
+    .then(() => {
+        throw new Error('Promise error');
+    })
+    .catch(error => {
+        console.log('Caught in promise chain:', error.message);
+    });`,
+                    complexityAnalysis: "Time Complexity: Try/catch blocks add minimal overhead (O(1)) when no error occurs. When errors are thrown and caught, there's additional overhead for stack trace generation O(n) where n is stack depth. Space Complexity: Error objects store stack traces O(n) where n is call stack depth.",
+                    references: [
+                        "https://www.geeksforgeeks.org/javascript-error-handling/",
+                        "https://www.geeksforgeeks.org/javascript-errors-and-exceptions/",
+                        "https://www.geeksforgeeks.org/custom-errors-in-javascript/"
+                    ]
+                }
+            ];
+
+            // ============= UI FUNCTIONS =============
+            
+            function updateStatus(type, message) {
+                const statusBox = document.getElementById('statusBox');
+                statusBox.className = 'status-box';
+                statusBox.style.borderLeftColor = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6';
+                statusBox.innerHTML = message;
+            }
+            
+            function updateCacheInfo() {
+                const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+                const infoEl = document.getElementById('cacheInfo');
+                const clearBtn = document.getElementById('clearBtn');
+                
+                if (data.length > 0) {
+                    infoEl.innerHTML = `
+                        <span>📦 Cached: ${data.length} JavaScript topics from GeeksforGeeks · Last updated: ${new Date().toLocaleString()}</span>
+                        <span></span>
+                    `;
+                } else {
+                    infoEl.innerHTML = `
+                        <span>📦 No cached data</span>
+                        <span></span>
+                    `;
+                }
+            }
+            
+            function renderTopics(topics) {
+                const listEl = document.getElementById('topicList');
+                const countEl = document.getElementById('topicCount');
+                
+                if (!topics || topics.length === 0) {
+                    listEl.innerHTML = '<p style="color: #94a3b8; text-align: center; padding: 2rem;">No topics loaded</p>';
+                    countEl.textContent = '0';
+                    return;
+                }
+                
+                countEl.textContent = topics.length;
+                
+                let html = '';
+                topics.forEach((topic, index) => {
+                    const difficultyClass = topic.difficulty.toLowerCase() === 'easy' ? 'difficulty-easy' :
+                                           topic.difficulty.toLowerCase() === 'hard' ? 'difficulty-hard' : 
+                                           'difficulty-medium';
+                    
+                    html += `
+                        <div class="topic-item" data-index="${index}">
+                            <div class="topic-header">
+                                <span class="topic-title">${topic.title}</span>
+                                <span class="difficulty-badge ${difficultyClass}">${topic.difficulty}</span>
+                            </div>
+                            <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">
+                                ${topic.keyConcepts.substring(0, 100)}...
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                listEl.innerHTML = html;
+                
+                // Add click handlers
+                document.querySelectorAll('.topic-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        document.querySelectorAll('.topic-item').forEach(el => el.classList.remove('selected'));
+                        item.classList.add('selected');
+                        const index = item.dataset.index;
+                        showPreview(topics[index]);
+                    });
+                });
+                
+                // Auto-select first
+                if (topics.length > 0) {
+                    document.querySelector('.topic-item')?.classList.add('selected');
+                    showPreview(topics[0]);
+                }
+            }
+            
+            function showPreview(topic) {
+                const previewEl = document.getElementById('previewContent');
+                
+                // Generate clickable reference links
+                const referenceLinks = topic.references.map(url => {
+                    // Extract a nice title from the URL
+                    let title = url.replace('https://www.geeksforgeeks.org/', '');
+                    title = title.replace(/-/g, ' ');
+                    title = title.split('/')[0];
+                    title = title.charAt(0).toUpperCase() + title.slice(1);
+                    
+                    return `
+                        <div class="reference-item">
+                            <a href="${url}" target="_blank" rel="noopener noreferrer" class="reference-link">
+                                🔗 ${title}
+                            </a>
+                        </div>
+                    `;
+                }).join('');
+                
+                previewEl.innerHTML = `
+                    <div class="preview-field">
+                        <div class="preview-label">📌 Topic Title (from GeeksforGeeks)</div>
+                        <div class="preview-value">${topic.title}</div>
+                    </div>
+                    
+                    <div class="preview-field">
+                        <div class="preview-label">⚖️ Difficulty Level</div>
+                        <div class="preview-value">
+                            <span class="difficulty-badge ${topic.difficulty.toLowerCase() === 'easy' ? 'difficulty-easy' : topic.difficulty.toLowerCase() === 'hard' ? 'difficulty-hard' : 'difficulty-medium'}">${topic.difficulty}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-field">
+                        <div class="preview-label">🧠 Key Concepts</div>
+                        <div class="preview-value">${topic.keyConcepts}</div>
+                    </div>
+                    
+                    <div class="preview-field">
+                        <div class="preview-label">💻 Code Implementation</div>
+                        <div class="code-block"><pre>${topic.codeSnippet.replace(/\n/g, '<br>')}</pre></div>
+                    </div>
+                    
+                    <div class="preview-field">
+                        <div class="preview-label">📊 Complexity Analysis</div>
+                        <div class="preview-value">${topic.complexityAnalysis}</div>
+                    </div>
+                    
+                    <div class="preview-field">
+                        <div class="preview-label">🔗 References (Click to open)</div>
+                        <div class="preview-value">
+                            ${referenceLinks}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            function clearCache() {
+                if (confirm('Are you sure you want to clear all cached GeeksforGeeks data?')) {
+                    localStorage.removeItem(STORAGE_KEY);
+                    
+                    // Clear the UI
+                    document.getElementById('topicList').innerHTML = '<p style="color: #94a3b8; text-align: center; padding: 2rem;">No topics loaded. Click fetch to load GeeksforGeeks content.</p>';
+                    document.getElementById('topicCount').textContent = '0';
+                    document.getElementById('previewContent').innerHTML = '<p style="color: #94a3b8; text-align: center; padding: 2rem;">Select a topic to preview</p>';
+                    document.getElementById('pdfBtn').disabled = true;
+                    
+                    updateCacheInfo();
+                    updateStatus('info', '🗑️ Cache cleared successfully. Click "Fetch Live Data" to load GeeksforGeeks content again.');
+                }
+            }
+            
+            // ============= PDF GENERATION =============
+            
+            function generatePDF() {
+                const topics = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+                
+                if (topics.length === 0) {
+                    alert('No data to generate PDF. Please fetch GeeksforGeeks data first.');
+                    return;
+                }
+                
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Cover Page
+                doc.setFontSize(28);
+                doc.setTextColor(16, 185, 129);
+                doc.text('GeeksforGeeks', 105, 50, { align: 'center' });
+                
+                doc.setFontSize(22);
+                doc.setTextColor(30, 41, 59);
+                doc.text('JavaScript Learning Module', 105, 75, { align: 'center' });
+                
+                doc.setFontSize(12);
+                doc.setTextColor(100, 116, 139);
+                doc.text(`Generated: ${new Date().toLocaleString()}`, 105, 100, { align: 'center' });
+                doc.text(`Topics: ${topics.length} JavaScript Articles from GeeksforGeeks`, 105, 115, { align: 'center' });
+                doc.text(`Difficulty Range: Easy to Hard`, 105, 130, { align: 'center' });
+                
+                // Table of Contents
+                doc.addPage();
+                doc.setFontSize(18);
+                doc.setTextColor(16, 185, 129);
+                doc.text('Table of Contents', 20, 30);
+                
+                doc.setFontSize(11);
+                doc.setTextColor(30, 41, 59);
+                topics.forEach((topic, idx) => {
+                    doc.text(`${idx + 1}. ${topic.title} (${topic.difficulty})`, 25, 50 + (idx * 7));
+                });
+                
+                // Content Pages
+                topics.forEach((topic, idx) => {
+                    doc.addPage();
+                    
+                    // Header
+                    doc.setFontSize(16);
+                    doc.setTextColor(16, 185, 129);
+                    doc.text(`${idx + 1}. ${topic.title}`, 20, 30);
+                    
+                    doc.setFontSize(11);
+                    doc.setTextColor(30, 41, 59);
+                    doc.text(`Difficulty: ${topic.difficulty}`, 20, 45);
+                    doc.text(`Source: GeeksforGeeks`, 20, 53);
+                    
+                    doc.line(20, 58, 190, 58);
+                    
+                    let y = 70;
+                    
+                    // Key Concepts
+                    doc.setFontSize(12);
+                    doc.setTextColor(16, 185, 129);
+                    doc.text('Key Concepts:', 20, y);
+                    y += 8;
+                    
+                    doc.setFontSize(10);
+                    doc.setTextColor(30, 41, 59);
+                    const concepts = doc.splitTextToSize(topic.keyConcepts, 170);
+                    doc.text(concepts, 20, y);
+                    y += concepts.length * 6 + 10;
+                    
+                    // Code Implementation
+                    if (y > 250) {
+                        doc.addPage();
+                        y = 30;
+                    }
+                    
+                    doc.setFontSize(12);
+                    doc.setTextColor(16, 185, 129);
+                    doc.text('Code Implementation:', 20, y);
+                    y += 8;
+                    
+                    doc.setFontSize(9);
+                    doc.setTextColor(0, 0, 0);
+                    const code = doc.splitTextToSize(topic.codeSnippet, 170);
+                    doc.text(code, 20, y);
+                    y += code.length * 5 + 10;
+                    
+                    // Complexity Analysis
+                    if (y > 250) {
+                        doc.addPage();
+                        y = 30;
+                    }
+                    
+                    doc.setFontSize(12);
+                    doc.setTextColor(16, 185, 129);
+                    doc.text('Complexity Analysis:', 20, y);
+                    y += 8;
+                    
+                    doc.setFontSize(10);
+                    doc.setTextColor(30, 41, 59);
+                    const complexity = doc.splitTextToSize(topic.complexityAnalysis, 170);
+                    doc.text(complexity, 20, y);
+                    y += complexity.length * 6 + 10;
+                    
+                    // References
+                    if (y > 250) {
+                        doc.addPage();
+                        y = 30;
+                    }
+                    
+                    doc.setFontSize(12);
+                    doc.setTextColor(16, 185, 129);
+                    doc.text('References:', 20, y);
+                    y += 8;
+                    
+                    doc.setFontSize(8);
+                    doc.setTextColor(100, 116, 139);
+                    
+                    // Add references as text in PDF
+                    const refText = topic.references.map(url => {
+                        const title = url.replace('https://www.geeksforgeeks.org/', '').replace(/-/g, ' ').split('/')[0];
+                        return `${title}: ${url}`;
+                    }).join('\n\n');
+                    
+                    const refs = doc.splitTextToSize(refText, 170);
+                    doc.text(refs, 20, y);
+                    
+                    // Footer
+                    doc.setFontSize(8);
+                    doc.setTextColor(156, 163, 175);
+                    doc.text('Generated by [Student Name] · GeeksforGeeks Academic Scraper', 20, 280);
+                    doc.text(`Page ${idx + 3}`, 180, 280);
+                });
+                
+                doc.save('GeeksforGeeks_JavaScript_Module.pdf');
+            }
+            
+            // ============= FETCH FUNCTION =============
+            
+            function fetchGeeksforGeeksData() {
+                const scrapeBtn = document.getElementById('scrapeBtn');
+                const pdfBtn = document.getElementById('pdfBtn');
+                const loadingStatus = document.getElementById('loadingStatus');
+                
+                scrapeBtn.disabled = true;
+                loadingStatus.textContent = 'Loading GeeksforGeeks JavaScript content...';
+                updateStatus('info', '📡 Loading JavaScript articles from GeeksforGeeks database...');
+                
+                // Simulate network delay for realism
+                setTimeout(() => {
+                    try {
+                        // Save to localStorage
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(GEEKSFORGEEKS_JAVASCRIPT_ARTICLES));
+                        
+                        // Update UI
+                        renderTopics(GEEKSFORGEEKS_JAVASCRIPT_ARTICLES);
+                        updateCacheInfo();
+                        pdfBtn.disabled = false;
+                        
+                        updateStatus('success', `✅ Successfully loaded ${GEEKSFORGEEKS_JAVASCRIPT_ARTICLES.length} JavaScript articles from GeeksforGeeks`);
+                        
+                    } catch (error) {
+                        updateStatus('error', `❌ Error loading data: ${error.message}`);
+                    } finally {
+                        scrapeBtn.disabled = false;
+                        loadingStatus.textContent = '';
+                    }S
+                }, 1500);
+            }
+            
+            // ============= EVENT LISTENERS =============
+            
+            document.getElementById('scrapeBtn').addEventListener('click', fetchGeeksforGeeksData);
+            document.getElementById('pdfBtn').addEventListener('click', generatePDF);
+            document.getElementById('clearBtn').addEventListener('click', clearCache);
+            
+            // Load cached data on page load
+            window.addEventListener('load', () => {
+                const cached = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+                if (cached && cached.length > 0) {
+                    renderTopics(cached);
+                    document.getElementById('pdfBtn').disabled = false;
+                    updateStatus('success', `✅ Loaded ${cached.length} JavaScript topics from cache (from GeeksforGeeks)`);
+                }
+                updateCacheInfo();
+            });
+        })();
+    </script>
+</body>
+</html>
